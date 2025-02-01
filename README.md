@@ -1,137 +1,85 @@
-```
-# Dotfiles Repository
+# Dotfiles
 
-This repository contains all the configurations for various tools and environments, including:
+This repository contains configuration files for various tools such as Neovim, Tmux, Zsh, and more.
 
-- Neovim (`~/.config/nvim`)
-- Tmux (`~/.tmux`)
-- Zsh (`~/.zshrc`, `~/.config/zsh`)
+## Getting Started
 
-## Table of Contents
+### Clone the Repository
 
-- [Neovim](#neovim)
-- [Tmux](#tmux)
-- [Zsh](#zsh)
-- [Adding a New Configuration](#adding-a-new-configuration)
-- [Retrieving Existing Configurations](#retrieving-existing-configurations)
+To get started, clone the repository into your home directory:
 
-## Neovim
-
-### Adding Neovim Config to Dotfiles
-
-1. If `~/.config/nvim` is a git repo and you want to add it as a submodule:
-    ```bash
-    dotfiles submodule add <your-nvim-repo-url> ~/.config/nvim
-    dotfiles commit -m "Added Neovim config as a submodule"
-    dotfiles push origin main
-    ```
-
-2. If `~/.config/nvim` is not a git repo, just add it to `dotfiles`:
-    ```bash
-    rm -rf ~/.config/nvim/.git
-    dotfiles add ~/.config/nvim
-    dotfiles commit -m "Added Neovim config"
-    dotfiles push origin main
-    ```
-
-3. If you want to track Neovim in a separate directory:
-    ```bash
-    mv ~/.config/nvim ~/dotfiles/nvim
-    ln -s ~/dotfiles/nvim ~/.config/nvim
-    dotfiles add ~/dotfiles/nvim
-    dotfiles commit -m "Added Neovim config via symlink"
-    dotfiles push origin main
-    ```
-
-### Retrieving Neovim Config
-
-To retrieve and apply your Neovim config on a new machine:
-```bash
-git clone <dotfiles-repo-url> ~/.dotfiles
-cd ~/.dotfiles
-./install.sh  # If you have an install script for symlinks
+```sh
+git clone --bare https://github.com/AimAmit/dotfiles.git $HOME/.dotfiles
 ```
 
-Then, ensure Neovim config is correctly symlinked or cloned based on your preference.
+### Install the Configurations
 
-## Tmux
+Once cloned, use the following command to symlink all the configuration files:
 
-### Adding Tmux Config to Dotfiles
-
-To add your Tmux configuration:
-```bash
-dotfiles add ~/.tmux
-dotfiles commit -m "Added Tmux config"
-dotfiles push origin main
+```sh
+cd ~
+git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout
 ```
 
-### Retrieving Tmux Config
+This will set up all configurations (Neovim, Tmux, Zsh, etc.) directly into your home directory.
 
-To retrieve and apply your Tmux config on a new machine:
-```bash
-git clone <dotfiles-repo-url> ~/.dotfiles
-cd ~/.dotfiles
-./install.sh  # Or manually symlink ~/.tmux
+### To Add New Config Files
+
+1. **Navigate to the configuration file** you want to add (e.g., for Neovim, Tmux, or Zsh).
+2. **Add the new file** to the dotfiles repo using the command below:
+
+   ```sh
+   dotfiles add <path_to_file_or_directory>
+   ```
+
+3. **Commit the changes**:
+
+   ```sh
+   dotfiles commit -m "Added new config for <config_name>"
+   ```
+
+4. **Push the changes to the repository**:
+
+   ```sh
+   dotfiles push
+   ```
+
+This will add your new configuration file to the repo and sync it with the remote.
+
+### Syncing Configuration Files
+
+To update or sync the configurations from the remote repository, simply run:
+
+```sh
+git --git-dir=$HOME/.dotfiles --work-tree=$HOME pull
 ```
 
-## Zsh
+### Removing a Configuration File
 
-### Adding Zsh Config to Dotfiles
+If you want to stop syncing a file, first remove the symlink and then commit the changes:
 
-To add your Zsh configuration:
-```bash
-dotfiles add ~/.zshrc
-dotfiles add ~/.config/zsh
-dotfiles commit -m "Added Zsh config"
-dotfiles push origin main
+```sh
+rm ~/.config/<config_file>
+dotfiles commit -m "Removed <config_name> config"
+dotfiles push
 ```
 
-### Retrieving Zsh Config
+### Install Dependencies
 
-To retrieve and apply your Zsh config on a new machine:
-```bash
-git clone <dotfiles-repo-url> ~/.dotfiles
-cd ~/.dotfiles
-./install.sh  # Or manually symlink ~/.zshrc and ~/.config/zsh
-```
+Some configurations may require additional dependencies like plugins or other software. You can install dependencies by following the respective instructions in the configuration files, for example:
 
-## Adding a New Configuration
+- For Neovim, use `:PlugInstall` or any other plugin manager you're using.
+- For Tmux, use `tmux plugin manager (TPM)`.
 
-To add a new config file or folder:
+### Troubleshooting
 
-1. Place your configuration file in the appropriate location (e.g., `~/.config/nvim`, `~/.tmux`, `~/.zshrc`).
-2. Add the file to the `dotfiles` repository:
-    ```bash
-    dotfiles add <file-or-folder>
-    ```
-3. Commit and push the change:
-    ```bash
-    dotfiles commit -m "Added new config for <tool>"
-    dotfiles push origin main
-    ```
+- If you encounter issues with symlinks or file conflicts, ensure that the `.config` directory is not part of the repository.
+- To reset all configurations, simply delete the `~/.dotfiles` directory and start the setup again.
 
-## Retrieving Existing Configurations
+## Configuration Files
 
-To retrieve your existing configurations on a new machine:
+- **Neovim**: Configurations located under `~/.config/nvim`.
+- **Tmux**: Configurations under `~/.tmux`.
+- **Zsh**: Configurations under `~/.zshrc`.
 
-1. Clone your `dotfiles` repository:
-    ```bash
-    git clone <dotfiles-repo-url> ~/.dotfiles
-    ```
-
-2. Run the setup script (if any) or manually create symlinks to the configuration files:
-    ```bash
-    cd ~/.dotfiles
-    ./install.sh  # If you have an install script for symlinks
-    ```
-
-Or manually symlink the individual files as needed:
-```bash
-ln -s ~/.dotfiles/nvim ~/.config/nvim
-ln -s ~/.dotfiles/tmux ~/.tmux
-ln -s ~/.dotfiles/zshrc ~/.zshrc
-ln -s ~/.dotfiles/zsh ~/.config/zsh
-```
-```
-
-This raw content provides a clear structure to manage your dotfiles, with instructions on adding and retrieving specific configurations for Neovim, Tmux, and Zsh. You can easily copy this into your `README.md` file and adjust it as per your setup.
+You can add or remove configurations by editing the relevant files in this repository.
